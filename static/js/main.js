@@ -36,7 +36,7 @@ async function cropAndSaveImage(img, box) {
         });
         
         if (response.ok) {
-            alert('Apple image saved successfully!');
+            
         } else {
             throw new Error('Failed to save apple image');
         }

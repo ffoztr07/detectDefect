@@ -9,6 +9,8 @@ from ultralytics import YOLO
 import os
 from datetime import datetime
 import logging
+import tensorflow as tf
+
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -107,8 +109,11 @@ async def save_apple(cropped_apple: UploadFile = File(...)):
             f.write(contents)
         
         logger.info(f"Successfully saved apple image: {filename}")
+        label, confidence = predict_apple(filepath)
+        
+        print(label, confidence)
         return JSONResponse(
-            content={"message": "Apple image saved successfully", "filename": filename},
+            content={"message": f"Prediction: {label}, Confidence: {confidence}"},
             status_code=200
         )
     except HTTPException as he:
@@ -120,6 +125,41 @@ async def save_apple(cropped_apple: UploadFile = File(...)):
             content={"error": "An unexpected error occurred while saving the image"},
             status_code=500
         )
+
+
+def predict_apple(image_path, model_path='model9148.h5'):
+    """
+    Predict whether an apple is healthy or defective using the trained model.
+    
+    Args:
+        image_path (str): Path to the image file of the apple
+        model_path (str): Path to the trained model file
+        
+    Returns:
+        tuple: (prediction, confidence)
+            - prediction (str): 'Healthy' or 'Defective'
+            - confidence (float): Confidence score between 0 and 1
+    """
+    # Load the model
+    model = tf.keras.models.load_model(model_path)
+    
+    # Load and preprocess the image
+    img = cv2.imread(image_path)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
+    img = cv2.resize(img, (224, 224))  # Resize to match model input size
+    img = img / 255.0  # Normalize pixel values
+    
+    # Add batch dimension
+    img = np.expand_dims(img, axis=0)
+    
+    # Make prediction
+    prediction = model.predict(img)[0][0]
+    
+    # Convert prediction to label and confidence
+    label = 'Healthy' if prediction > 0.5 else 'Defective'
+    confidence = prediction if prediction > 0.5 else 1 - prediction
+    
+    return label, confidence
 
 # Run the FastAPI app with uvicorn
 if __name__ == "__main__":
