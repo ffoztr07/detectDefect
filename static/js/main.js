@@ -36,7 +36,8 @@ async function cropAndSaveImage(img, box) {
         });
         
         if (response.ok) {
-            
+            const data = await response.json();
+            result.innerHTML = `<h2>Prediction Result:</h2><p>${data.message}</p>`;
         } else {
             throw new Error('Failed to save apple image');
         }
