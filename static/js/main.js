@@ -3,6 +3,77 @@ const preview = document.getElementById('preview');
 const result = document.getElementById('result');
 const previewContainer = document.getElementById('preview-container');
 
+// Add camera button
+const cameraButton = document.createElement('button');
+cameraButton.textContent = 'Open Camera';
+cameraButton.style.marginLeft = '10px';
+imageInput.parentNode.insertBefore(cameraButton, imageInput.nextSibling);
+
+// Function to handle camera input
+async function handleCameraInput() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const video = document.createElement('video');
+        video.srcObject = stream;
+        video.autoplay = true;
+        video.style.width = '100%';
+        video.style.maxWidth = '800px';
+        video.style.height = 'auto';
+        video.style.margin = '10px 0';
+        
+        // Create video container
+        const videoContainer = document.createElement('div');
+        videoContainer.style.textAlign = 'center';
+        videoContainer.style.margin = '20px 0';
+        videoContainer.appendChild(video);
+        
+        // Insert video container after the buttons
+        cameraButton.parentNode.insertBefore(videoContainer, cameraButton.nextSibling);
+        
+        // Create canvas for capturing
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Create capture button
+        const captureButton = document.createElement('button');
+        captureButton.textContent = 'Take Photo';
+        captureButton.style.marginLeft = '10px';
+        cameraButton.parentNode.insertBefore(captureButton, cameraButton.nextSibling);
+        
+        // Start video
+        await video.play();
+        
+        // Handle capture
+        captureButton.onclick = () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0);
+            
+            // Convert canvas to blob
+            canvas.toBlob((blob) => {
+                const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                imageInput.files = dataTransfer.files;
+                
+                // Trigger the change event
+                const event = new Event('change', { bubbles: true });
+                imageInput.dispatchEvent(event);
+                
+                // Cleanup
+                stream.getTracks().forEach(track => track.stop());
+                videoContainer.remove();
+                captureButton.remove();
+            }, 'image/jpeg');
+        };
+    } catch (error) {
+        alert('Error accessing camera: ' + error.message);
+    }
+}
+
+// Add click handler for camera button
+cameraButton.onclick = handleCameraInput;
+
 // Function to crop and save image
 async function cropAndSaveImage(img, box) {
     const canvas = document.createElement('canvas');
