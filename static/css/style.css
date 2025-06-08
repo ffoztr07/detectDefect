@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.container {
+    text-align: center;
+}
+
+#preview-container {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    display: block;
+    background: #222;
+    overflow: hidden;
+}
+
+#preview {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+#result {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.detection-box {
+    position: absolute;
+    border: 2px solid rgb(13, 234, 83);
+    background-color: rgba(31, 207, 48, 0.1);
+    pointer-events: none;
+} 
