@@ -3,6 +3,26 @@ const preview = document.getElementById('preview');
 const result = document.getElementById('result');
 const previewContainer = document.getElementById('preview-container');
 
+// Create fixed detect defect button
+const detectDefectButton = document.createElement('button');
+detectDefectButton.textContent = 'Detect Defect';
+detectDefectButton.style.position = 'fixed';
+detectDefectButton.style.bottom = '20px';
+detectDefectButton.style.left = '50%';
+detectDefectButton.style.transform = 'translateX(-50%)';
+detectDefectButton.style.padding = '10px 20px';
+detectDefectButton.style.backgroundColor = '#4CAF50';
+detectDefectButton.style.color = 'white';
+detectDefectButton.style.border = 'none';
+detectDefectButton.style.borderRadius = '5px';
+detectDefectButton.style.cursor = 'pointer';
+detectDefectButton.style.display = 'none';
+detectDefectButton.style.zIndex = '1000';
+document.body.appendChild(detectDefectButton);
+
+// Store the highest confidence apple detection
+let highestConfidenceApple = null;
+
 // Add camera button
 const cameraButton = document.createElement('button');
 cameraButton.textContent = 'Open Camera';
@@ -145,7 +165,7 @@ imageInput.addEventListener('change', async (e) => {
             result.innerHTML = '<h2>Detections:</h2>';
             
             // Find the apple detection with highest confidence
-            let highestConfidenceApple = null;
+            highestConfidenceApple = null;
             data.detections.forEach(detection => {
                 if (detection.class.toLowerCase() === 'apple') {
                     if (!highestConfidenceApple || detection.confidence > highestConfidenceApple.confidence) {
@@ -154,12 +174,15 @@ imageInput.addEventListener('change', async (e) => {
                 }
             });
 
+            // Show/hide detect defect button based on apple detection
+            detectDefectButton.style.display = highestConfidenceApple ? 'block' : 'none';
+
             const containerWidth = 800;
             const containerHeight = 600;
             const imgWidth = preview.naturalWidth;
             const imgHeight = preview.naturalHeight;
             // Calculate scale and offset for object-fit: contain
-            const scale = Math.min(containerWidth / imgWidth, containerHeight / imgHeight);
+            const scale = Math.min(containerWidth / imgWidth, containerHeight / imgHeight) * 1.2;
             const dispWidth = imgWidth * scale;
             const dispHeight = imgHeight * scale;
             const offsetX = (containerWidth - dispWidth) / 2;
@@ -192,19 +215,6 @@ imageInput.addEventListener('change', async (e) => {
                     label.style.textShadow = '1px 1px 2px black';
                     label.style.pointerEvents = 'auto';
                     box.appendChild(label);
-
-                    // Add save button only for the highest confidence apple
-                    if (detection === highestConfidenceApple) {
-                        const saveButton = document.createElement('button');
-                        saveButton.textContent = 'Detect Defect';
-                        saveButton.style.position = 'absolute';
-                        saveButton.style.bottom = '-30px';
-                        saveButton.style.left = '50%';
-                        saveButton.style.transform = 'translateX(-50%)';
-                        saveButton.onclick = () => cropAndSaveImage(preview, detection.box);
-                        saveButton.style.pointerEvents = 'auto';
-                        box.appendChild(saveButton);
-                    }
                     
                     previewContainer.appendChild(box);
                 }
@@ -216,6 +226,14 @@ imageInput.addEventListener('change', async (e) => {
             });
         } catch (error) {
             result.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            detectDefectButton.style.display = 'none';
         }
     };
-}); 
+});
+
+// Add click handler for the fixed detect defect button
+detectDefectButton.onclick = () => {
+    if (highestConfidenceApple) {
+        cropAndSaveImage(preview, highestConfidenceApple.box);
+    }
+}; 
