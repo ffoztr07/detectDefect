@@ -78,10 +78,6 @@ The system uses two YOLO models:
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## License
-
-[Add your license information here]
-
 ## Contact
 
 ffoztrk08@gmail.com 
