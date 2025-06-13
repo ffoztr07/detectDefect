@@ -9,7 +9,6 @@ from ultralytics import YOLO
 import os
 from datetime import datetime
 import logging
-import tensorflow as tf
 
 
 # Set up logging
@@ -127,39 +126,33 @@ async def save_apple(cropped_apple: UploadFile = File(...)):
         )
 
 
-def predict_apple(image_path, model_path='model9148.h5'):
-    """
-    Predict whether an apple is healthy or defective using the trained model.
+def predict_apple(image_path, model_path='best.pt'):
     
-    Args:
-        image_path (str): Path to the image file of the apple
-        model_path (str): Path to the trained model file
-        
-    Returns:
-        tuple: (prediction, confidence)
-            - prediction (str): 'Healthy' or 'Defective'
-            - confidence (float): Confidence score between 0 and 1
-    """
-    # Load the model
-    model = tf.keras.models.load_model(model_path)
-    
-    # Load and preprocess the image
+    # Load the YOLO model
+    model = YOLO(model_path)
+
+    # Load the image
     img = cv2.imread(image_path)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
-    img = cv2.resize(img, (224, 224))  # Resize to match model input size
-    img = img / 255.0  # Normalize pixel values
-    
-    # Add batch dimension
-    img = np.expand_dims(img, axis=0)
-    
-    # Make prediction
-    prediction = model.predict(img)[0][0]
-    
-    # Convert prediction to label and confidence
-    label = 'Healthy' if prediction > 0.5 else 'Defective'
-    confidence = prediction if prediction > 0.5 else 1 - prediction
-    
-    return label, confidence
+
+    # Run inference
+    results = model(img)
+
+    # Assume your model has two classes: 0=Healthy, 1=Defective
+    best_conf = 0
+    best_label = None
+    for result in results:
+        for box in result.boxes:
+            cls = int(box.cls[0])
+            conf = float(box.conf[0])
+            if conf > best_conf:
+                best_conf = conf
+                best_label = cls
+
+    if best_label is None:
+        return "No apple detected", 0.0
+
+    label = "Healthy" if best_label == 0 else "Defective"
+    return label, best_conf
 
 # Run the FastAPI app with uvicorn
 if __name__ == "__main__":
