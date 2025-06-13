@@ -177,8 +177,8 @@ imageInput.addEventListener('change', async (e) => {
             // Show/hide detect defect button based on apple detection
             detectDefectButton.style.display = highestConfidenceApple ? 'block' : 'none';
 
-            const containerWidth = 800;
-            const containerHeight = 600;
+            const containerWidth = previewContainer.clientWidth;
+            const containerHeight = previewContainer.clientHeight;
             const imgWidth = preview.naturalWidth;
             const imgHeight = preview.naturalHeight;
             // Calculate scale and offset for object-fit: contain
