@@ -36,6 +36,7 @@ ENV/
 saved_apples/
 *.h5
 *.pt
+Dockerfile
 
 # Logs
 *.log
