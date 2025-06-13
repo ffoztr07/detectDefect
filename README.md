@@ -32,6 +32,30 @@ pip install -r requirements.txt
 - YOLOv8x model for detection (`yolov8x.pt`)
 - Custom trained model for classification (`best.pt`)
 
+## Dataset and Model Training
+
+The system uses a custom-trained model that was fine-tuned on a curated dataset of 2,002 apple images selected from multiple sources:
+
+1. Apple Type Dataset (ennur/apple-type)
+   - Original dataset contains 1,187 images
+   - Classification dataset for fresh and rotten apples
+   - Source: [https://universe.roboflow.com/ennur/apple-type](https://universe.roboflow.com/ennur/apple-type)
+
+2. Apple Defect Dataset (apple-defect/appledetectionv1.0)
+   - Original dataset contains 1,585 images
+   - Object detection dataset for apple defects
+   - Source: [https://universe.roboflow.com/apple-defect/appledetectionv1.0-kzzoi](https://universe.roboflow.com/apple-defect/appledetectionv1.0-kzzoi)
+
+3. Apple Detection Dataset (phamhuyhoangs-project/apple-detection)
+   - Original dataset contains 2,057 images
+   - Comprehensive object detection dataset
+   - Source: [https://universe.roboflow.com/phamhuyhoangs-project/apple-detection-8rtsu/dataset/1](https://universe.roboflow.com/phamhuyhoangs-project/apple-detection-8rtsu/dataset/1)
+
+The model was trained by:
+1. Selecting and labeling 2,002 apple images from these datasets
+2. Fine-tuning YOLOv8n.pt on the combined dataset
+3. Generating the final model (`best.pt`)
+
 ## Project Structure
 
 ```
@@ -72,7 +96,7 @@ http://localhost:8000
 
 The system uses two YOLO models:
 1. YOLOv8x (`yolov8x.pt`) for apple detection
-2. Custom trained model (`best.pt`) for apple classification
+2. Custom trained model (`best.pt`) for apple classification, fine-tuned from YOLOv8n on our custom dataset of 2,002 apple images
 
 ## Contributing
 
