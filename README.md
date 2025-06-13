@@ -19,7 +19,7 @@ This project implements a web-based system for detecting and classifying apples 
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/InterFaze0/detectDefect.git
 cd apple-detection
 ```
 
@@ -84,4 +84,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Contact
 
-[Add your contact information here] 
+ffoztrk08@gmail.com 
