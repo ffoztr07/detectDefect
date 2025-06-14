@@ -24,7 +24,7 @@ Visit our live demo site to test the apple detection and classification system i
 1. Clone the repository:
 ```bash
 git clone https://github.com/InterFaze0/detectDefect.git
-cd apple-detection
+cd detectDefect
 ```
 
 2. Install the required dependencies:
