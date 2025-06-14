@@ -100,7 +100,7 @@ http://localhost:8000
 
 The system uses two YOLO models:
 1. YOLOv8x (`yolov8x.pt`) for apple detection
-2. Custom trained model (`best.pt`) for apple classification, fine-tuned from YOLOv8n on our custom dataset of 2,002 apple images
+2. Custom-trained model (best.pt) for apple classification, fine-tuned from YOLOv8n on a dataset of 2,002 apple images.
 
 ## Contributing
 
