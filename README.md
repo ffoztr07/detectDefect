@@ -2,9 +2,9 @@
 
 This project implements a web-based system for detecting and classifying apples using YOLOv8. The system can detect apples in images and classify them as either healthy or defective.
 
-🌐 **Live Demo**: [http://45.147.47.83:8000/](http://45.147.47.83:8000/)
-
 Visit our live demo site to test the apple detection and classification system in real-time. Upload your apple images and get instant results for defect detection and classification.
+
+🌐 **Live Demo**: [http://45.147.47.83:8000/](http://45.147.47.83:8000/)
 
 ## Features
 
