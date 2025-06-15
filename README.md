@@ -2,9 +2,9 @@
 
 This project implements a web-based system for detecting and classifying apples using YOLOv8. The system can detect apples in images and classify them as either healthy or defective.
 
-🌐 **Live Demo**: [http://45.147.47.83:8000/](http://45.147.47.83:8000/)
-
 Visit our live demo site to test the apple detection and classification system in real-time. Upload your apple images and get instant results for defect detection and classification.
+
+🌐 **Live Demo**: [http://45.147.47.83:8000/](http://45.147.47.83:8000/)
 
 ## Features
 
@@ -24,7 +24,7 @@ Visit our live demo site to test the apple detection and classification system i
 1. Clone the repository:
 ```bash
 git clone https://github.com/InterFaze0/detectDefect.git
-cd apple-detection
+cd detectDefect
 ```
 
 2. Install the required dependencies:
@@ -100,7 +100,7 @@ http://localhost:8000
 
 The system uses two YOLO models:
 1. YOLOv8x (`yolov8x.pt`) for apple detection
-2. Custom trained model (`best.pt`) for apple classification, fine-tuned from YOLOv8n on our custom dataset of 2,002 apple images
+2. Custom-trained model (best.pt) for apple classification, fine-tuned from YOLOv8n on a dataset of 2,002 apple images.
 
 ## Contributing
 
