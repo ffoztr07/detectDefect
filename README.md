@@ -4,7 +4,7 @@ This project implements a web-based system for detecting and classifying apples 
 
 Visit our live demo site to test the apple detection and classification system in real-time. Upload your apple images and get instant results for defect detection and classification.
 
-🌐 **Live Demo**: [http://45.147.47.83:8000/](http://45.147.47.83:8000/)
+🌐 **Live Demo**: It is not accessible right now.
 
 ## Features
 
